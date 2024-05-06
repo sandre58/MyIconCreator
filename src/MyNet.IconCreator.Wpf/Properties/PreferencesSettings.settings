@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MyNet.IconCreator.Wpf.Properties" GeneratedClassName="PreferencesSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ThemeBase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Light</Value>
+    </Setting>
+    <Setting Name="Language" Type="System.String" Scope="User">
+      <Value Profile="(Default)">fr-FR</Value>
+    </Setting>
+    <Setting Name="ThemePrimaryColor" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">#FFF09301</Value>
+    </Setting>
+    <Setting Name="ThemeAccentColor" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">#FFF6CB08</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

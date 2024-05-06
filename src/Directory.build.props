@@ -1,0 +1,33 @@
+<Project>
+  <!-- Reference: https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2017 -->
+  
+<!-- Informations -->
+  <PropertyGroup>
+    <Product>My Icon Creator</Product>
+    <Authors>Stéphane ANDRE</Authors>
+    <Owners>Stéphane ANDRE</Owners>
+    <Copyright>Copyright © 2016-$([System.DateTime]::Now.ToString(yyyy)) - Stéphane ANDRE. All Rights Reserved.</Copyright>
+    <Version>1.0.0-alpha</Version>
+  </PropertyGroup>
+
+<!-- Configuration -->
+  <PropertyGroup>
+    <BaseOutputPath>bin</BaseOutputPath>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <Configurations>Debug;Release</Configurations>
+    <NeutralLanguage>fr</NeutralLanguage>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <Deterministic>False</Deterministic>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)MyIconCreator.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>$(NoWarn);SYSLIB0013;SYSLIB1054;CS1591;CS1574;NU5104</NoWarn>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
+    <IsTestProject>$(MSBuildProjectName.Contains('UnitTests'))</IsTestProject>
+    <GenerateDocumentationFile Condition="'$(IsTestProject)' != 'true' And '$(Configuration)' == 'Release'">true</GenerateDocumentationFile>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DeterministicSourcePaths Condition="'$(EnableSourceLink)' == ''">false</DeterministicSourcePaths>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,69 @@
+# Copyright (c) Stéphane ANDRE.
+# Licensed under the MIT license.
+
+# This continuous integration pipeline is triggered anytime a user pushes code to main branch.
+# This pipeline builds the solution and runs unit tests
+
+name: Build
+
+on:
+  push:
+      branches:
+        - main
+      paths:
+        - .github/workflows/ci.yml
+        - .github/GitVersion.yml
+        - 'src/**'
+  workflow_dispatch:
+
+jobs:
+
+  # GitVersion
+  gitversion:
+    timeout-minutes: 5
+    runs-on: windows-latest
+    outputs:
+      full_version: ${{ steps.gitversion.outputs.SemVer }}
+      suffix_label: ${{ steps.gitversion.outputs.PreReleaseLabel }}
+
+    steps:
+
+      # Checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+
+      # Install Git version
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v1.1.1
+        with:
+          versionSpec: '5.x'
+
+      # Check Git version
+      - name: Check Git Semantic Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v1.1.1 # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/execute/usage-examples.md
+        with:
+          useConfigFile: true
+          configFilePath: .\.github\GitVersion.yml
+          disableNormalization: true
+
+  # Build
+  build:
+    uses: avantipoint/workflow-templates/.github/workflows/dotnet-build.yml@master # https://github.com/AvantiPoint/workflow-templates/blob/master/.github/workflows/dotnet-build.yml
+    needs: [ gitversion ]
+    with:
+      name: Build
+      build-args: '/p:GitVersion=${{ needs.gitversion.outputs.full_version }} /p:VersionSuffix=${{ needs.gitversion.outputs.suffix_label }}'
+      dotnet-test-logger: GitHubActions --no-build --no-restore
+      solution-path: .\src\MyIconCreator.sln
+      nugetFeedUrl: ${{ vars.PRIVATE_NUGET_API_SOURCE }}
+      artifact-name: IconCreator
+      artificats-path: |
+                        ./build/IconCreator/Release/**
+                        !./build/IconCreator/Release/*.xml
+                        !./build/IconCreator/Release/*.pdb
+    secrets:
+      nugetUserName: ${{ vars.PRIVATE_NUGET_API_USERNAME }}
+      nugetToken: ${{ secrets.PRIVATE_NUGET_API_KEY }}

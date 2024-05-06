@@ -1,0 +1,14 @@
+﻿<Application x:Class="MyNet.IconCreator.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:my="http://mynet.com/xaml/themes">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--  It's only for autocompletion in Design Mode  -->
+                <my:SharedResourceDictionary DesignMode="True" Source="pack://application:,,,/MyNet.Wpf;component/Themes/MyNet.Styles.xaml" />
+                <my:ThemeDictionary />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

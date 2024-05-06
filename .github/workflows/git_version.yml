@@ -1,0 +1,36 @@
+# Copyright (c) Stéphane ANDRE.
+# Licensed under the MIT license.
+
+name: Check Git Version
+
+on: 
+  workflow_dispatch:
+
+jobs:
+
+  # GitVersion
+  gitversion:
+    runs-on: windows-latest
+
+    steps:
+
+      # Checkout
+      - name: Checkout
+        uses: actions/checkout@v4
+        with: 
+          fetch-depth: 0
+
+      # Install Git version
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v1.1.1
+        with:
+          versionSpec: '5.x'
+
+      # Check Git version
+      - name: Check Git Semantic Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v1.1.1 # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/execute/usage-examples.md
+        with:
+          useConfigFile: true
+          configFilePath: .\.github\GitVersion.yml
+          disableNormalization: true

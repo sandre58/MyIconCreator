@@ -1,0 +1,84 @@
+﻿<my:ExtendedWindow x:Class="MyNet.IconCreator.Views.MainWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:my="http://mynet.com/xaml/themes"
+                   xmlns:shell="clr-namespace:MyNet.IconCreator.Views"
+                   xmlns:viewmodels="clr-namespace:MyNet.IconCreator.ViewModels"
+                   Title="{Binding Title}"
+                   d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+                   my:ViewModelAssist.AutoWire="True"
+                   AllowDrop="False"
+                   Icon="pack://application:,,,/IconCreator;component/Images/logo.ico"
+                   ShowIconOnTitleBar="True"
+                   WindowState="Maximized"
+                   mc:Ignorable="d">
+    <my:ExtendedWindow.Resources>
+        <my:BindingProxy x:Key="Proxy" Data="{Binding}" />
+    </my:ExtendedWindow.Resources>
+
+    <!--  HotKeys  -->
+    <my:ExtendedWindow.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="Q" Command="{Binding ExitCommand}" />
+        <KeyBinding Key="F6" Command="{Binding IsLightCommand}" />
+        <KeyBinding Key="F7" Command="{Binding IsDarkCommand}" />
+    </my:ExtendedWindow.InputBindings>
+
+    <!--  Right Commands  -->
+    <my:ExtendedWindow.RightWindowCommands>
+        <mah:WindowCommands>
+
+            <!--  Language  -->
+            <ListBox Style="{StaticResource MyNet.Styles.ListBox.Icon}"
+                     Margin="{StaticResource MyNet.Margins.Default.Horizontal}"
+                     VerticalAlignment="Center"
+                     ItemsSource="{Binding Cultures}"
+                     SelectedValue="{Binding SelectedCulture}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Margin="4 0" Text="{my:Translation Name, Casing=AllCaps}" ToolTip="{my:Translation DisplayName, Casing=Title}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!--  Theme  -->
+            <my:SimpleStackPanel Margin="{StaticResource MyNet.Margins.Medium.Horizontal}" VerticalAlignment="Center" Orientation="Horizontal">
+                <Button Style="{StaticResource MyNet.Styles.Button.Icon.Foreground}"
+                        Command="{Binding IsLightCommand}"
+                        Content="{my:ToolIcon Kind=WeatherSunny}"
+                        ToolTip="{my:Resource Light}" />
+                <ToggleButton Style="{StaticResource MyNet.Styles.ToggleButton.Switch.Foreground}" IsChecked="{Binding IsDark}" />
+                <Button Style="{StaticResource MyNet.Styles.Button.Icon.Foreground}"
+                        Command="{Binding IsDarkCommand}"
+                        Content="{my:ToolIcon Kind=WeatherNight}"
+                        ToolTip="{my:Resource Dark}" />
+            </my:SimpleStackPanel>
+        </mah:WindowCommands>
+    </my:ExtendedWindow.RightWindowCommands>
+
+    <!--  Title  -->
+    <my:ExtendedWindow.TitleTemplate>
+        <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Data.Title, Source={StaticResource Proxy}}" />
+                <TextBlock Margin="{StaticResource MyNet.Margins.Small.Left}"
+                           Opacity="{StaticResource MyNet.Opacity.Secondary}"
+                           Text="[Debug]"
+                           Visibility="{Binding Data.IsDebug, Source={StaticResource Proxy}, Converter={x:Static my:BooleanToVisibilityConverter.CollapsedIfFalse}}" />
+            </StackPanel>
+        </DataTemplate>
+    </my:ExtendedWindow.TitleTemplate>
+
+    <Grid>
+
+        <!--  Main Container  -->
+        <Grid x:Name="Root" my:BusyAssist.AttachService="{Binding BusyService}">
+            <shell:MainView />
+        </Grid>
+
+        <!--  Dialog Container  -->
+        <Grid my:DialogAssist.AssociatedControl="{Binding ElementName=Root}" my:DialogAssist.AttachService="{Binding DialogService}" />
+    </Grid>
+</my:ExtendedWindow>
