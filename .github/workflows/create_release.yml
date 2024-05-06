@@ -125,9 +125,9 @@ jobs:
             echo "is-preview=true" >> $Env:GITHUB_OUTPUT
             if ('${{ needs.gitversion.outputs.suffix_label }}' -eq 'pre') {
                 echo "release-display-name='${{ needs.gitversion.outputs.version }} - Preview'" >> $Env:GITHUB_OUTPUT
-            } else if ('${{ needs.gitversion.outputs.suffix_label }}' -eq 'alpha') {
+            } elseif ('${{ needs.gitversion.outputs.suffix_label }}' -eq 'alpha') {
                 echo "release-display-name='${{ needs.gitversion.outputs.version }} - Alpha'" >> $Env:GITHUB_OUTPUT
-            } else if ('${{ needs.gitversion.outputs.suffix_label }}' -eq 'beta') {
+            } elseif ('${{ needs.gitversion.outputs.suffix_label }}' -eq 'beta') {
                 echo "release-display-name='${{ needs.gitversion.outputs.version }} - Beta'" >> $Env:GITHUB_OUTPUT
             }
           }
