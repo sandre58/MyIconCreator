@@ -12,6 +12,7 @@
 
 <!-- Configuration -->
   <PropertyGroup>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <BaseOutputPath>bin</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
     <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>

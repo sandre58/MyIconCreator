@@ -55,7 +55,7 @@ jobs:
     needs: [ gitversion ]
     with:
       name: Build
-      build-args: '/p:GitVersion=${{ needs.gitversion.outputs.full_version }} /p:VersionSuffix=${{ needs.gitversion.outputs.suffix_label }}'
+      build-args: '/p:Version=${{ needs.gitversion.outputs.full_version }}'
       dotnet-test-logger: GitHubActions --no-build --no-restore
       solution-path: .\src\MyIconCreator.sln
       nugetFeedUrl: ${{ vars.PRIVATE_NUGET_API_SOURCE }}
