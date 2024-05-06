@@ -111,7 +111,7 @@ jobs:
           
       # Zip application files
       - name: Zip artifact for deployment
-        run: zip Artifacts/IconCreator.zip IconCreator/** -r
+        run: zip IconCreator.zip IconCreator/** -r
 
       # Get release labels
       - name: Define release parameters
@@ -136,7 +136,7 @@ jobs:
       - uses: ncipollo/release-action@main # https://github.com/marketplace/actions/create-release
         name: Create Release
         with:
-          artifacts: "Artifacts/*.zip"
+          artifacts: "IconCreator.zip"
           artifactErrorsFailBuild: true
           draft: true
           generateReleaseNotes: false
