@@ -57,7 +57,7 @@ jobs:
       solution-path: .\src\MyIconCreator.sln
       nugetFeedUrl: ${{ vars.PRIVATE_NUGET_API_SOURCE }}
       artifact-name: IconCreator
-      artificats-path: |
+      artifacts-path: |
                         ./build/IconCreator/Release/**
                         !./build/IconCreator/Release/*.xml
                         !./build/IconCreator/Release/*.pdb
