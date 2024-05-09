@@ -65,5 +65,5 @@ My Icon Creator is provided as-is under the MIT license. For more information se
 [downloads-url]: https://github.com/sandre58/MyIconCreator/releases
 [framework-shield]: https://img.shields.io/badge/.NET-8.0-purple
 [framework-url]: https://github.com/sandre58/MyIconCreator/tree/main/src/MyNet.IconCreator.Wpf
-[version-shield]: https://img.shields.io/nuget/v/MyNet.IconCreator.Wpf
-[version-url]: https://www.nuget.org/packages/MyNet.IconCreator.Wpf
+[version-shield]: https://img.shields.io/badge/version-1.0.0-blue
+[version-url]: https://github.com/sandre58/MyIconCreator/releases
