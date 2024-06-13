@@ -51,7 +51,7 @@ internal class ApplicationHostService : IHostedService
         DialogManager.Initialize(dialogService, messageBoxFactory, viewResolver, viewLocator, viewModelLocator);
         BusyManager.Initialize(busyServiceFactory);
         CommandsManager.Initialize(commandFactory);
-        Observable.Threading.Scheduler.Initialize(uiScheduler);
+        UI.Threading.Scheduler.Initialize(uiScheduler);
 
         TranslationService.RegisterResources(nameof(IconCreatorResources), IconCreatorResources.ResourceManager);
     }

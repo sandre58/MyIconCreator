@@ -132,7 +132,7 @@ namespace MyNet.IconCreator.ViewModels
             }).ConfigureAwait(false);
 
             if (result.IsTrue())
-                await BusyService.WaitIndeterminateAsync(() => Observable.Threading.Scheduler.GetUIOrCurrent().Schedule(() => XamlToImageFileService.SaveImage(fe, filename))).ConfigureAwait(false);
+                await BusyService.WaitIndeterminateAsync(() => MyNet.UI.Threading.Scheduler.GetUIOrCurrent().Schedule(() => XamlToImageFileService.SaveImage(fe, filename))).ConfigureAwait(false);
         }
 
         private async Task SaveIconAsync(object x)
@@ -146,7 +146,7 @@ namespace MyNet.IconCreator.ViewModels
             }).ConfigureAwait(false);
 
             if (result.IsTrue())
-                await BusyService.WaitIndeterminateAsync(() => Observable.Threading.Scheduler.UI.Schedule(() => XamlToImageFileService.SaveIcon(fe, filename))).ConfigureAwait(false);
+                await BusyService.WaitIndeterminateAsync(() => UI.Threading.Scheduler.UI.Schedule(() => XamlToImageFileService.SaveIcon(fe, filename))).ConfigureAwait(false);
         }
 
         public void SaveSettings()
