@@ -1,0 +1,25 @@
+<Project>
+    <!-- Reference: https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2017 -->
+
+    <!-- Informations -->
+    <PropertyGroup>
+        <Authors>Stéphane ANDRE</Authors>
+        <Owners>Stéphane ANDRE</Owners>
+        <Company>My Icon Creator</Company>
+        <Copyright>Copyright © 2016-$([System.DateTime]::Now.ToString(yyyy)) - Stéphane ANDRE. All Rights Reserved.</Copyright>
+    </PropertyGroup>
+
+    <!-- Configuration -->
+    <PropertyGroup>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <LangVersion>preview</LangVersion>
+        <NeutralLanguage>fr</NeutralLanguage>
+        <Nullable Condition="'$(Nullable)' == ''">enable</Nullable>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <!-- Imports -->
+    <Import Project="$(MSBuildThisFileDirectory)/build/code-analysis.props" Condition="Exists('$(MSBuildThisFileDirectory)/build/code-analysis.props')" />
+
+</Project>

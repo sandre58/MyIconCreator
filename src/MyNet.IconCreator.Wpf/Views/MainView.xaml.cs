@@ -1,13 +1,15 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="MainView.xaml.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
-namespace MyNet.IconCreator.Views
+namespace MyNet.IconCreator.Wpf.Views;
+
+/// <summary>
+/// Interaction logic for MainView.xaml.
+/// </summary>
+public partial class MainView
 {
-    /// <summary>
-    /// Interaction logic for MainView.xaml
-    /// </summary>
-    public partial class MainView
-    {
-        public MainView() => InitializeComponent();
-    }
+    public MainView() => InitializeComponent();
 }

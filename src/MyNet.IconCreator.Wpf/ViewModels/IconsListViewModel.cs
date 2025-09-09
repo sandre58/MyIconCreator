@@ -1,5 +1,8 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="IconsListViewModel.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
@@ -7,38 +10,27 @@ using MyNet.UI.ViewModels.List;
 using MyNet.UI.ViewModels.List.Filtering;
 using MyNet.UI.ViewModels.List.Filtering.Filters;
 
-namespace MyNet.IconCreator.ViewModels
+namespace MyNet.IconCreator.Wpf.ViewModels;
+
+internal sealed class IconsListViewModel(ICollection<IconData> collection) : SelectionListViewModel<IconData>(collection, new IconsControllerProvider(), selectionMode: UI.Selection.SelectionMode.Single);
+
+internal sealed class IconsControllerProvider : ListParametersProvider
 {
-    internal class IconsListViewModel : SelectionListViewModel<IconData>
-    {
-        public IconsListViewModel(ICollection<IconData> collection) : base(collection, new IconsControllerProvider(), selectionMode: UI.Selection.SelectionMode.Single) { }
-    }
+    public IconsControllerProvider()
+        : base(nameof(IconData.Name)) { }
 
-    internal class IconsControllerProvider : ListParametersProvider
-    {
-        public IconsControllerProvider() : base(nameof(IconData.Name)) { }
+    public override IFiltersViewModel ProvideFilters() => new StringFilterViewModel(nameof(IconData.Aliases));
+}
 
-        public override IFiltersViewModel ProvideFilters() => new StringFilterViewModel(nameof(IconData.Aliases));
-    }
+internal sealed class IconData(Func<object> buildIcon, string name, string[] aliases, string? data)
+{
+    private readonly Func<object> _buildIcon = buildIcon;
 
-    internal class IconData
-    {
-        private readonly Func<object> _buildIcon;
+    public object Icon => _buildIcon();
 
-        public IconData(Func<object> buildIcon, string name, string[] aliases, string? data)
-        {
-            _buildIcon = buildIcon;
-            Name = name;
-            Aliases = aliases;
-            Data = data;
-        }
+    public string Name { get; } = name;
 
-        public object Icon => _buildIcon();
+    public string[] Aliases { get; } = aliases;
 
-        public string Name { get; }
-
-        public string[] Aliases { get; }
-
-        public string? Data { get; }
-    }
+    public string? Data { get; } = data;
 }

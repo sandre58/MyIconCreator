@@ -1,0 +1,29 @@
+# <type>[optional scope]: <description>
+#
+# [optional body]
+#
+# [optional footer(s)]
+
+# Types:
+# feat:     A new feature
+# fix:      A bug fix
+# docs:     Documentation only changes
+# style:    Changes that do not affect the meaning of the code
+# refactor: A code change that neither fixes a bug nor adds a feature
+# perf:     A code change that improves performance
+# test:     Adding missing tests or correcting existing tests
+# build:    Changes that affect the build system or external dependencies
+# ci:       Changes to CI configuration files and scripts
+# chore:    Other changes that don't modify src or test files
+#
+# Common scopes: auth, utils, http, observable, ui, wpf, avalonia, validation, logging, config
+#
+# Examples:
+# feat(auth): add JWT token validation
+# fix(utils): resolve null reference exception
+# docs(readme): update installation guide
+# refactor(http): simplify retry mechanism
+# perf(collections): optimize large list operations
+# 
+# For breaking changes, add:
+# BREAKING CHANGE: description of the breaking change
