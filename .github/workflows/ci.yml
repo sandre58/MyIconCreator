@@ -94,7 +94,7 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-            name: MyIconCreator-${{ steps.gitversion.outputs.SemVer }}.zip
+            name: MyIconCreator-${{ steps.gitversion.outputs.SemVer }}
 
       # Install git-chglog
       - name: Install git-chglog
