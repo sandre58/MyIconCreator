@@ -18,8 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github Actions", "Github Actions", "{E1FDB1EB-FB63-409E-8962-2929AD1EE63C}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\ci.yml = .github\workflows\ci.yml
-		.github\workflows\release.yml = .github\workflows\release.yml
-		.github\workflows\tag.yml = .github\workflows\tag.yml
+		GitVersion.yml = GitVersion.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNet.IconCreator.Wpf", "src\MyNet.IconCreator.Wpf\MyNet.IconCreator.Wpf.csproj", "{5075D785-E5CE-483A-A77F-26CA6306A9FF}"
@@ -45,6 +44,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D9BB56F3
 		Settings.XamlStyler = Settings.XamlStyler
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{7F2F8D53-9940-43C6-B49D-1897EE090237}"
+	ProjectSection(SolutionItems) = preProject
+		.github\.chglog\CHANGELOG.tpl.md = .github\.chglog\CHANGELOG.tpl.md
+		.github\.chglog\config.yml = .github\.chglog\config.yml
+		.github\.chglog\release-config.yml = .github\.chglog\release-config.yml
+		.github\.chglog\RELEASE.tpl.md = .github\.chglog\RELEASE.tpl.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +71,7 @@ Global
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {5D1BCDF4-BE5F-488D-BF24-64F497C5F1B7}
 		{788321C9-1527-4623-AB50-ACC0982C1CAA} = {5D1BCDF4-BE5F-488D-BF24-64F497C5F1B7}
 		{D9BB56F3-8C0A-49C2-B061-C4D000140E51} = {5D1BCDF4-BE5F-488D-BF24-64F497C5F1B7}
+		{7F2F8D53-9940-43C6-B49D-1897EE090237} = {E1FDB1EB-FB63-409E-8962-2929AD1EE63C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		RESX_ConfirmAddLanguageFile = True
