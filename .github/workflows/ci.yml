@@ -1,69 +1,191 @@
-# Copyright (c) Stéphane ANDRE.
-# Licensed under the MIT license.
-
-# This continuous integration pipeline is triggered anytime a user pushes code to main branch.
-# This pipeline builds the solution and runs unit tests
-
-name: Build
+name: CI
 
 on:
   push:
-      branches:
-        - main
-      paths:
-        - .github/workflows/ci.yml
-        - .github/GitVersion.yml
-        - 'src/**'
-  workflow_dispatch:
+    branches: [ "**" ]
+    tags: [ "v*" ]
+
+permissions:
+  contents: write
 
 jobs:
-
-  # GitVersion
-  gitversion:
-    timeout-minutes: 5
+  # Build job - runs on all branches and tags
+  build:
     runs-on: windows-latest
-    outputs:
-      full_version: ${{ steps.gitversion.outputs.SemVer }}
-      suffix_label: ${{ steps.gitversion.outputs.PreReleaseLabel }}
 
     steps:
-
-      # Checkout
+      # Checkout the repository
       - name: Checkout
         uses: actions/checkout@v4
-        with: 
+        with:
           fetch-depth: 0
 
-      # Install Git version
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v1.1.1
+      # Set up .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      # Setup GitVersion
+      - name: Setup GitVersion
+        uses: gittools/actions/gitversion/setup@v1
         with:
           versionSpec: '5.x'
 
-      # Check Git version
-      - name: Check Git Semantic Version
+      # Run GitVersion to get version information
+      - name: Run GitVersion
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v1.1.1 # https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/execute/usage-examples.md
+        uses: gittools/actions/gitversion/execute@v1
         with:
           useConfigFile: true
-          configFilePath: .\.github\GitVersion.yml
-          disableNormalization: true
 
-  # Build
-  build:
-    uses: avantipoint/workflow-templates/.github/workflows/dotnet-build.yml@master # https://github.com/AvantiPoint/workflow-templates/blob/master/.github/workflows/dotnet-build.yml
-    needs: [ gitversion ]
-    with:
-      name: Build
-      build-args: '/p:Version=${{ needs.gitversion.outputs.full_version }}'
-      dotnet-test-logger: GitHubActions --no-build --no-restore
-      solution-path: .\src\MyIconCreator.sln
-      nugetFeedUrl: ${{ vars.PRIVATE_NUGET_API_SOURCE }}
-      artifact-name: IconCreator
-      artifacts-path: |
-                        ./build/IconCreator/Release/**
-                        !./build/IconCreator/Release/*.xml
-                        !./build/IconCreator/Release/*.pdb
-    secrets:
-      nugetUserName: ${{ vars.PRIVATE_NUGET_API_USERNAME }}
-      nugetToken: ${{ secrets.PRIVATE_NUGET_API_KEY }}
+      # Restore project dependencies
+      - name: Restore
+        run: dotnet restore --property:Version=${{ steps.gitversion.outputs.FullSemVer }}
+
+      # Build the project
+      - name: Build
+        run: dotnet build --configuration Release --no-restore --property:Version=${{ steps.gitversion.outputs.FullSemVer }}
+
+      # Publish App
+      - name: Publish App
+        run: |
+          dotnet publish src/MyNet.IconCreator.Wpf/MyNet.IconCreator.Wpf.csproj -c Release -p:Version=${{ steps.gitversion.outputs.FullSemVer }} -o MyIconCreator
+
+      # Zip the published app into a single archive
+      - name: Zip App
+        run: |
+          powershell -Command "Compress-Archive -Path 'MyIconCreator\\*' -DestinationPath 'MyIconCreator-${{ steps.gitversion.outputs.SemVer }}.zip' -Force"
+
+      # Upload build artifacts for release job
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: MyIconCreator-${{ steps.gitversion.outputs.SemVer }}.zip
+
+  # Release job - runs only on tags
+  create-release:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Setup GitVersion for release job
+      - name: Setup GitVersion
+        uses: gittools/actions/gitversion/setup@v1
+        with:
+          versionSpec: '5.x'
+
+      # Run GitVersion to get version information
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v1
+        with:
+          useConfigFile: true
+
+      # Download build artifacts
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build
+
+      # Install git-chglog
+      - name: Install git-chglog
+        run: |
+          echo "Installing git-chglog..."
+          wget -O git-chglog.tar.gz https://github.com/git-chglog/git-chglog/releases/download/v0.15.4/git-chglog_0.15.4_linux_amd64.tar.gz
+          tar -xzf git-chglog.tar.gz
+          sudo mv git-chglog /usr/local/bin/
+          chmod +x /usr/local/bin/git-chglog
+          git-chglog --version
+
+      # Extract version from tag
+      - name: Extract version
+        id: version
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      # Generate release changelog using git-chglog
+      - name: Generate release changelog
+        id: changelog
+        shell: bash
+        run: |
+          TAG="${{ steps.version.outputs.tag_name }}"
+          
+          echo "Generating release changelog for $TAG using git-chglog..."
+          
+          # Get the previous tag
+          PREVIOUS_TAG=$(git tag --sort=-version:refname | grep -v "^$TAG$" | head -n1)
+          
+          if [ -z "$PREVIOUS_TAG" ]; then
+            echo "No previous tag found, generating changelog from beginning"
+            git-chglog --config .github/.chglog/release-config.yml "$TAG" > RELEASE_CHANGELOG.md
+          else
+            echo "Previous tag: $PREVIOUS_TAG"
+            git-chglog --config .github/.chglog/release-config.yml "$PREVIOUS_TAG".."$TAG" > RELEASE_CHANGELOG.md
+          fi
+          
+          echo "Release changelog generated:"
+          cat RELEASE_CHANGELOG.md
+
+      # Update global CHANGELOG.md using git-chglog
+      - name: Update global CHANGELOG
+        shell: bash
+        run: |
+          echo "Updating global CHANGELOG.md using git-chglog..."
+          
+          # Generate complete changelog for all versions
+          git-chglog --config .github/.chglog/config.yml > CHANGELOG.md
+          
+          echo "CHANGELOG.md updated successfully"
+          echo "Content preview:"
+          head -30 CHANGELOG.md
+
+      # Commit updated CHANGELOG.md
+      - name: Commit updated CHANGELOG
+        shell: bash
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          git add CHANGELOG.md
+          
+          if git diff --staged --quiet; then
+            echo "No changes to CHANGELOG.md, skipping commit"
+          else
+            git commit -m "docs: update CHANGELOG.md for ${{ steps.version.outputs.tag_name }}
+
+            Auto-generated by GitHub Actions"
+            
+            # Create a temporary branch to push changes
+            git checkout -b temp-changelog-update
+            git push origin temp-changelog-update
+            
+            # Create PR or merge directly if you have permissions
+            # For now, we'll just push the branch
+            echo "CHANGELOG.md changes pushed to temp-changelog-update branch"
+          fi
+
+      # Create GitHub Release
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.tag_name }}
+          name: My Icon Creator v${{ steps.version.outputs.version }}
+          body_path: RELEASE_CHANGELOG.md
+          draft: false
+          prerelease: false
+          files: |
+            MyIconCreator-${{ steps.gitversion.outputs.SemVer }}.zip

@@ -1,13 +1,15 @@
-﻿// Copyright (c) Stéphane ANDRE. All Right Reserved.
-// See the LICENSE file in the project root for more information.
+﻿// -----------------------------------------------------------------------
+// <copyright file="IconSelectionView.xaml.cs" company="Stéphane ANDRE">
+// Copyright (c) Stéphane ANDRE. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
-namespace MyNet.IconCreator.Views
+namespace MyNet.IconCreator.Wpf.Views;
+
+/// <summary>
+/// Interaction logic for IconView.xaml.
+/// </summary>
+public partial class IconSelectionView
 {
-    /// <summary>
-    /// Interaction logic for IconView.xaml
-    /// </summary>
-    public partial class IconSelectionView
-    {
-        public IconSelectionView() => InitializeComponent();
-    }
+    public IconSelectionView() => InitializeComponent();
 }

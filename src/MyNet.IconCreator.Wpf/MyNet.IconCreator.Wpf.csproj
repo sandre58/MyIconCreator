@@ -1,31 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <OutputType>WinExe</OutputType>
     <Description>Create stunning icons effortlessly with our WPF application! Our user-friendly interface empowers you to design custom icons with precision and creativity.</Description>
     <ExtrasEnableWpfProjectSetup>true</ExtrasEnableWpfProjectSetup>
     <Prefer32Bit>false</Prefer32Bit>
     <AssemblyName>IconCreator</AssemblyName>
     <ApplicationIcon>Images\logo.ico</ApplicationIcon>
-    <BaseOutputPath>$(SolutionDir)..\build\$(AssemblyName)</BaseOutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>None</DebugType>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-preview.5.24306.7" />
-    <PackageReference Include="Fody" Version="6.8.1">
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0-preview.7.25380.108" />
+    <PackageReference Include="Fody" Version="6.9.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MyNet.Utilities.Logging.NLog" Version="1.0.1" />
-    <PackageReference Include="MyNet.Wpf" Version="4.2.0" />
+    <PackageReference Include="MyNet.Utilities.Logging.NLog" Version="8.0.43" />
+    <PackageReference Include="MyNet.Wpf" Version="6.0.48" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
