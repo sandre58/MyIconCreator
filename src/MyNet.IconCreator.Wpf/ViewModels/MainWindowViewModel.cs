@@ -17,7 +17,7 @@ using MyNet.IconCreator.Wpf.Resources;
 using MyNet.Observable;
 using MyNet.UI.Commands;
 using MyNet.UI.Dialogs;
-using MyNet.UI.Dialogs.CustomDialogs;
+using MyNet.UI.Dialogs.ContentDialogs;
 using MyNet.UI.Loading;
 using MyNet.UI.Theming;
 using MyNet.UI.Toasting;
@@ -46,9 +46,9 @@ internal sealed class MainWindowViewModel : ObservableObject
 
     public IBusyService BusyService { get; }
 
-    public ICustomDialogService DialogService { get; }
+    public IContentDialogService DialogService { get; }
 
-    public MainWindowViewModel(IBusyService busyService, ICustomDialogService dialogService)
+    public MainWindowViewModel(IBusyService busyService, IContentDialogService dialogService)
     {
         BusyService = busyService;
         DialogService = dialogService;

@@ -19,6 +19,28 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
+    <!-- Versioning -->
+    <PropertyGroup>
+
+        <!-- GitVersion -->
+        <GitVersionMajor Condition="'$(GitVersion_Major)' != ''">$(GitVersion_Major)</GitVersionMajor>
+        <GitVersionMinor Condition="'$(GitVersion_Minor)' != ''">$(GitVersion_Minor)</GitVersionMinor>
+        <GitVersionPatch Condition="'$(GitVersion_Patch)' != ''">$(GitVersion_Patch)</GitVersionPatch>
+        <GitVersionMajor Condition="'$(GitVersionMajor)' == ''">1</GitVersionMajor>
+        <GitVersionMinor Condition="'$(GitVersionMinor)' == ''">0</GitVersionMinor>
+        <GitVersionPatch Condition="'$(GitVersionPatch)' == ''">0</GitVersionPatch>
+
+        <!-- Final version -->
+        <Version>$(GitVersionMajor).$(GitVersionMinor).$(GitVersionPatch)</Version>
+        <AssemblyVersion>$(GitVersionMajor).$(GitVersionMinor).0.0</AssemblyVersion>
+        <FileVersion>$(GitVersionMajor).$(GitVersionMinor).$(GitVersionPatch).0</FileVersion>
+
+        <!-- Preversion (preview, alpha, etc.) -->
+        <VersionSuffix Condition="'$(GitVersion_PreReleaseLabel)' != ''">$(GitVersion_PreReleaseLabel).$(GitVersion_PreReleaseNumber)</VersionSuffix>
+
+    </PropertyGroup>
+
+
     <!-- Imports -->
     <Import Project="$(MSBuildThisFileDirectory)/build/code-analysis.props" Condition="Exists('$(MSBuildThisFileDirectory)/build/code-analysis.props')" />
 

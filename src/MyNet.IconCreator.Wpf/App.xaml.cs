@@ -17,7 +17,7 @@ using MyNet.IconCreator.Wpf.Services;
 using MyNet.IconCreator.Wpf.ViewModels;
 using MyNet.UI.Commands;
 using MyNet.UI.Dialogs;
-using MyNet.UI.Dialogs.CustomDialogs;
+using MyNet.UI.Dialogs.ContentDialogs;
 using MyNet.UI.Dialogs.FileDialogs;
 using MyNet.UI.Dialogs.MessageBox;
 using MyNet.UI.Loading;
@@ -64,9 +64,10 @@ public partial class App : Application
         .AddSingleton<IViewResolver, ViewResolver>()
         .AddSingleton<IThemeService, ThemeService>()
         .AddSingleton<IToasterService, ToasterService>()
-        .AddSingleton<ICustomDialogService, OverlayDialogService>()
+        .AddSingleton<IContentDialogService, OverlayDialogService>()
         .AddSingleton<IMessageBoxService, OverlayDialogService>()
         .AddSingleton<IFileDialogService, FileDialogService>()
+        .AddSingleton<IDialogService, DialogService>()
         .AddSingleton(_ => BusyManager.Create())
         .AddScoped<IBusyServiceFactory, BusyServiceFactory>()
         .AddScoped<IMessageBoxFactory, MessageBoxFactory>()

@@ -18,8 +18,6 @@ using MyNet.IconCreator.Wpf.ViewModels;
 using MyNet.IconCreator.Wpf.Views;
 using MyNet.UI.Commands;
 using MyNet.UI.Dialogs;
-using MyNet.UI.Dialogs.CustomDialogs;
-using MyNet.UI.Dialogs.FileDialogs;
 using MyNet.UI.Dialogs.MessageBox;
 using MyNet.UI.Loading;
 using MyNet.UI.Locators;
@@ -38,9 +36,7 @@ internal sealed class ApplicationHostService : IHostedService
     public ApplicationHostService(
         IThemeService themeService,
         IToasterService toasterService,
-        ICustomDialogService dialogService,
-        IMessageBoxService messageBoxService,
-        IFileDialogService fileDialogService,
+        IDialogService dialogService,
         IViewModelResolver viewModelResolver,
         IViewModelLocator viewModelLocator,
         IViewResolver viewResolver,
@@ -56,7 +52,7 @@ internal sealed class ApplicationHostService : IHostedService
         ViewManager.Initialize(viewResolver, viewLocator);
         ThemeManager.Initialize(themeService);
         ToasterManager.Initialize(toasterService);
-        DialogManager.Initialize(dialogService, messageBoxService, fileDialogService, messageBoxFactory, viewResolver, viewLocator, viewModelLocator);
+        DialogManager.Initialize(dialogService);
         BusyManager.Initialize(busyServiceFactory);
         CommandsManager.Initialize(commandFactory);
         UI.Threading.Scheduler.Initialize(uiScheduler);

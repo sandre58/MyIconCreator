@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0-rc.2.25502.107" />
+    <PackageVersion Include="Fody" Version="6.9.3" />
+    <PackageVersion Include="MyNet.Utilities.Logging.NLog" Version="13.0.0" />
+    <PackageVersion Include="MyNet.Wpf" Version="7.0.0" />
+    <PackageVersion Include="PropertyChanged.Fody" Version="4.1.0" />
+    <!-- Code Analysis -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.100-rc.2.25502.107" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.14.1" />
+  </ItemGroup>
+</Project>

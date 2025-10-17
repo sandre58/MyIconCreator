@@ -1,20 +1,19 @@
 <Project>
 
     <PropertyGroup>
-        <EnableAnalyzers Condition="'$(EnableAnalyzers)' == ''">true</EnableAnalyzers>
         <NoWarn>$(NoWarn);SYSLIB0013;SYSLIB1054;CS1591;CS1574;NU5104;NETSDK1206;NETSDK1057</NoWarn>
         <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
     </PropertyGroup>
-    
-    <PropertyGroup Condition="'$(EnableAnalyzers)' == 'true'">
-        
+
+    <PropertyGroup>
+
         <!-- Enable analyzers during build -->
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
 
         <!-- Enforce rules on all projects -->
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
         <AnalysisLevel>latest</AnalysisLevel>
-        
+
         <!-- Ignore specific SDK warnings -->
         <NoWarn>$(NoWarn);SYSLIB0013;SYSLIB1054;CS1591;CS1574;NU5104;NETSDK1206;NETSDK1057</NoWarn>
 
@@ -25,18 +24,18 @@
     </PropertyGroup>
 
     <!-- Analysis configuration files -->
-    <ItemGroup Condition="'$(EnableAnalyzers)' == 'true'">
+    <ItemGroup>
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)..\stylecop.json" Link=".stylecop.json" Visible="False" />
     </ItemGroup>
 
     <!-- Add common analyzer packages -->
-    <ItemGroup Condition="'$(EnableAnalyzers)' == 'true'">
+    <ItemGroup>
         <!-- Analyzers Microsoft -->
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.0-preview.25380.108" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" PrivateAssets="all" />
         <!-- StyleCop -->
-        <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="all" />
+        <PackageReference Include="StyleCop.Analyzers" PrivateAssets="all" />
         <!-- Roslynator -->
-        <PackageReference Include="Roslynator.Analyzers" Version="4.14.0" PrivateAssets="all" />
+        <PackageReference Include="Roslynator.Analyzers" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>
